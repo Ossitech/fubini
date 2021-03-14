@@ -6,6 +6,7 @@ LABEL description="Container for use with Fubini Example"
 RUN apt-get update && apt-get install -y g++
 
 COPY main.cpp /
+COPY InfInt.h /
 
 RUN g++ /main.cpp
 

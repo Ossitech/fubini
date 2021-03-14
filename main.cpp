@@ -31,6 +31,9 @@ InfInt f(int n){
             m[n] = 1;
             return 1;
     }
+
+    if (m[n] != 0) return m[n];
+
     InfInt s = 0;
     for(int k = 1; k <= n; k++){
         s += over(n, k) * f(n - k);

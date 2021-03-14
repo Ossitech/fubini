@@ -15,16 +15,13 @@ git clone https://github.com/Ossitech/fubini
 cd fubini
 docker build -t fubini .
 ```
-
-How to use the algorithm:
 To get all the fubini numbers up to the 11th one use: 
 
 ```bash
 docker run fubini 11
 
 ```
-It prints a list containing the numbers.
-Example:
+It prints a list containing the numbers. For the example input of 11:
 ```bash
 [1, 1, 3, 13, 75, 541, 4683, 47293, 545835, 7087261, 102247563, 1622632573]
 ```

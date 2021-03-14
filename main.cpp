@@ -2,6 +2,9 @@
 #include <map>
 #include <stdlib.h>
 
+/*
+Dieser Header bietet eine Integerimplementierung, welche unendlich wachsen kann, um größere Zahlen darzustellen.
+*/
 #include "InfInt.h"
 
 /*
@@ -32,6 +35,7 @@ InfInt f(int n){
             return 1;
     }
 
+    //Erst schauen ob wir das schomal berechnet haben
     if (m[n] != 0) return m[n];
 
     InfInt s = 0;

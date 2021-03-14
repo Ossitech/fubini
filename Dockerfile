@@ -5,6 +5,10 @@ LABEL description="Container for use with Fubini Example"
 # install build dependencies 
 RUN apt-get update && apt-get install -y g++
 
-RUN g++ main.cpp
+COPY main.cpp /
 
-ENTRYPOINT ["entrypoint.sh"]
+RUN g++ /main.cpp
+
+COPY entrypoint.sh /
+
+ENTRYPOINT ["/entrypoint.sh"]

@@ -1,10 +1,10 @@
-FROM python:3.8.0-buster
+FROM ubuntu 
 
-WORKDIR /3d_packing
-COPY requirements.txt .
+LABEL description="Container for use with Fubini Example" 
 
-RUN pip install -r requirements.txt
+# install build dependencies 
+RUN apt-get update && apt-get install -y g++
 
-COPY . .
+RUN g++ main.cpp
 
-CMD [ "python", "main.py", "3000" ]
+CMD ["./a.out"]

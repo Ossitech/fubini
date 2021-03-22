@@ -8,81 +8,67 @@ Dieser Header bietet eine Integerimplementierung, welche unendlich wachsen kann,
 #include "InfInt.h"
 
 /*
-Schon berechnete Fakultäten
-*/
-std::map<InfInt, InfInt> fac_map;
-
-/*
-Fakultätsfunktion
-*/
-InfInt fac(InfInt n){
-    if (n == 0) return 1;
-    if (fac_map[n] != 0) return fac_map[n];
-    return n * fac(n - 1);
-}
-
-/*
-Schon berechnete Binomialkoeffizienten
-*/
-std::map<InfInt, std::map<InfInt, InfInt>> bin_map;
-
-/*
-Funktion "n über k" oder Binomialkoeffizient
-*/
-InfInt over(InfInt n, InfInt k){
-    if (bin_map[n][k] != 0) return bin_map[n][k];
-    return fac(n) / (fac(k) * fac(n - k));
-}
-/*
-Enthält am Ende die Ergebnisse
-*/
-std::map<int, InfInt> m;
-
-/*
 Die eigentliche Fubinifunktion
 */
-InfInt f(int n){
-    if (n == 0){
-            m[n] = 1;
-            return 1;
+InfInt orderings(int n, InfInt** f){
+    f[1][0] = 1;
+    int factorial = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        f[i][0] = 1;
+        factorial *= i;
+        f[i][i - 1] = factorial;
+        for (int k = 1; k < n; k++)
+        {
+            InfInt tmp = (k + 1);
+            f[i][k] = tmp * (f[i - 1][k - 1] + f[i - 1][k]);
+        }
     }
-
-    //Erst schauen ob wir das schomal berechnet haben
-    if (m[n] != 0) return m[n];
-
-    InfInt s = 0;
-    for(int k = 1; k <= n; k++){
-        s += over(n, k) * f(n - k);
+    InfInt answer = 0;
+    for (int i = 0; i < n; i++)
+    {
+        answer += f[n][i];
     }
-    m[n] = s;
-    return s;
+    return answer;
 }
 
 int main(int argc, char** argv){
+
     //Standardmäßig wird für n 0 gewählt.
     int n = 100;
 
     //Übergabeparameter verwenden
     if(argc > 1) n = std::atoi(argv[1]);
 
-    f(n);
+    //Array enthält Zwischen- und Endergebnisse
 
-    //Ausgabe der Liste
+    InfInt** f = new InfInt*[n+1];
+    for (int i = 0; i < n+1; i++)
+    {
+        f[i] = new InfInt[n];
+        for (int j = 0; j < n; j++)
+            f[i][j] = 0;
+    }
 
-    std::map<int, InfInt>::iterator it;
-    int i = 0;
+    //Berechnung starten
+    InfInt answer = orderings(n, f);
 
     std::cout << "[";
 
-    for(it = m.begin(); it != m.end(); it++){
-        if(i != 0) std::cout << ", ";
-
-        std::cout << it->second;
-
-        i++;
+    for(int i = 0; i < n; i++){
+            InfInt tmp = 0;
+            for(int j = 0; j < i; j++){
+                tmp += f[i][j];
+            }
+            if(tmp == 0) tmp = 1;
+            std::cout << tmp << ", ";
     }
 
-    std::cout << "]" << std::endl;
+    std::cout << answer << "]" << std::endl;
+
+    for(int i = 0; i < n + 1; i++){
+        delete[] f[i];
+    }
 
     return 0;
 }

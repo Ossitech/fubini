@@ -8,17 +8,29 @@ Dieser Header bietet eine Integerimplementierung, welche unendlich wachsen kann,
 #include "InfInt.h"
 
 /*
+Schon berechnete Fakultäten
+*/
+std::map<InfInt, InfInt> fac_map;
+
+/*
 Fakultätsfunktion
 */
 InfInt fac(InfInt n){
     if (n == 0) return 1;
+    if (fac_map[n] != 0) return fac_map[n];
     return n * fac(n - 1);
 }
+
+/*
+Schon berechnete Binomialkoeffizienten
+*/
+std::map<InfInt, std::map<InfInt, InfInt>> bin_map;
 
 /*
 Funktion "n über k" oder Binomialkoeffizient
 */
 InfInt over(InfInt n, InfInt k){
+    if (bin_map[n][k] != 0) return bin_map[n][k];
     return fac(n) / (fac(k) * fac(n - k));
 }
 /*
@@ -48,7 +60,7 @@ InfInt f(int n){
 
 int main(int argc, char** argv){
     //Standardmäßig wird für n 0 gewählt.
-    int n = 0;
+    int n = 100;
 
     //Übergabeparameter verwenden
     if(argc > 1) n = std::atoi(argv[1]);
